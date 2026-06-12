@@ -1,0 +1,25 @@
+# --- OS / editor ---
+.DS_Store
+*.swp
+.idea/
+.vs/
+.vscode/
+
+# --- Secrets / env ---
+.env
+*.env
+!*.env.example
+
+# --- Node (frontend + legacy backend) ---
+node_modules/
+dist/
+coverage/
+*.log
+
+# --- .NET ---
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+backend/**/logs/
+*.user

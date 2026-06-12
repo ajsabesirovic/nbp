@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FitJourney.API/FitJourney.API.csproj" />
+    <Project Path="src/FitJourney.Application/FitJourney.Application.csproj" />
+    <Project Path="src/FitJourney.Domain/FitJourney.Domain.csproj" />
+    <Project Path="src/FitJourney.Infrastructure/FitJourney.Infrastructure.csproj" />
+  </Folder>
+</Solution>
