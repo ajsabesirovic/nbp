@@ -2,6 +2,15 @@ import axios from 'axios';
 
 export const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || '/api/v1' });
 
+export const assetUrl = (u) => {
+  if (!u) return u;
+  if (/^https?:\/\//.test(u)) return u;
+  const apiUrl = import.meta.env.VITE_API_URL;
+  if (!apiUrl) return u;
+  const origin = apiUrl.replace(/\/api\/v\d+\/?$/, '');
+  return origin + (u.startsWith('/') ? u : '/' + u);
+};
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;

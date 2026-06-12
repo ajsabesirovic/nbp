@@ -31,6 +31,11 @@ public static class DependencyInjection
         services.AddScoped<FitJourney.Application.Services.IReminderService, FitJourney.Application.Services.ReminderService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<DbSeeder>();
+
+        var cloudinaryUrl = config["Cloudinary:Url"];
+        if (!string.IsNullOrWhiteSpace(cloudinaryUrl))
+            services.AddSingleton<IPhotoStorage>(new CloudinaryPhotoStorage(cloudinaryUrl));
+
         return services;
     }
 }

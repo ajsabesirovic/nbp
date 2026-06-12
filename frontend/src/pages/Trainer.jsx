@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { api } from '../api/client';
+import { api, assetUrl } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
 const prettyLabel = (v) =>
@@ -135,9 +135,9 @@ function TrainerDashboard() {
                   <h3 className="font-semibold mb-3">Progress photos</h3>
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                     {summary.data.photos.map((p) => (
-                      <a key={p._id} href={p.url} target="_blank" rel="noreferrer" title={p.note || ''}>
+                      <a key={p._id} href={assetUrl(p.url)} target="_blank" rel="noreferrer" title={p.note || ''}>
                         <img
-                          src={p.url}
+                          src={assetUrl(p.url)}
                           alt={p.note || 'Progress photo'}
                           className="w-full aspect-square object-cover rounded hover:opacity-90 transition-opacity"
                         />

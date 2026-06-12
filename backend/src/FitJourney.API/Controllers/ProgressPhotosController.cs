@@ -3,6 +3,7 @@ using AutoMapper;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using FitJourney.Application.DTOs;
 using FitJourney.Domain.Entities;
 using FitJourney.Domain.Interfaces;
@@ -41,14 +42,23 @@ public class ProgressPhotosController(IProgressPhotoRepository repo, IMapper map
             return BadRequest(new { error = "Date taken cannot be in the future" });
 
         var uid = Uid();
-        var folder = Path.Combine(env.ContentRootPath, "wwwroot", "uploads", uid);
-        Directory.CreateDirectory(folder);
-        var fileName = $"{Guid.NewGuid():N}{ext}";
-        var path = Path.Combine(folder, fileName);
-        using (var stream = System.IO.File.Create(path))
-            await file.CopyToAsync(stream);
-
-        var url = $"/uploads/{uid}/{fileName}";
+        string url;
+        var storage = HttpContext.RequestServices.GetService<IPhotoStorage>();
+        if (storage != null)
+        {
+            await using var stream = file.OpenReadStream();
+            url = await storage.SaveAsync(stream, uid, file.FileName);
+        }
+        else
+        {
+            var folder = Path.Combine(env.ContentRootPath, "wwwroot", "uploads", uid);
+            Directory.CreateDirectory(folder);
+            var fileName = $"{Guid.NewGuid():N}{ext}";
+            var path = Path.Combine(folder, fileName);
+            using (var stream = System.IO.File.Create(path))
+                await file.CopyToAsync(stream);
+            url = $"/uploads/{uid}/{fileName}";
+        }
         var now = DateTime.UtcNow;
         var photo = new ProgressPhoto
         {

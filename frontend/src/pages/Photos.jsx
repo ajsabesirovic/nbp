@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
-import { api } from '../api/client';
+import { api, assetUrl } from '../api/client';
 import IconButton from '../components/IconButton';
 
 export default function Photos() {
@@ -83,9 +83,9 @@ export default function Photos() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {data?.items?.map((p) => (
             <div key={p._id} className="card !p-2">
-              <a href={p.url} target="_blank" rel="noreferrer" title="View full size">
+              <a href={assetUrl(p.url)} target="_blank" rel="noreferrer" title="View full size">
                 <img
-                  src={p.url}
+                  src={assetUrl(p.url)}
                   alt={p.note || 'Progress photo'}
                   className="w-full aspect-square object-cover rounded hover:opacity-90 transition-opacity"
                 />
